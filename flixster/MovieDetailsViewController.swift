@@ -24,11 +24,24 @@ class MovieDetailsViewController: UIViewController {
         synopsisLabel.text = movie["overview"] as? String
         synopsisLabel.sizeToFit()
         
+        posterView.layer.masksToBounds = true
+        posterView.layer.borderWidth = 1.5
+        posterView.layer.borderColor = UIColor.white.cgColor
+        posterView.layer.cornerRadius = posterView.bounds.width / 10
         let posterBaseUrl = "https://image.tmdb.org/t/p/w185/"
         let posterPath = movie["poster_path"] as! String
         let posterUrl = URL(string: posterBaseUrl + posterPath)!
         posterView.af_setImage(withURL: posterUrl)
         
+        
+        let view = UIView(frame: backdropView.frame)
+        let gradient = CAGradientLayer()
+        gradient.frame = view.frame
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradient.locations = [0.0, 1.0]
+        view.layer.insertSublayer(gradient, at: 0)
+        backdropView.addSubview(view)
+        backdropView.bringSubviewToFront(view)
         let backdropBaseUrl = "https://image.tmdb.org/t/p/w780/"
         let backdropPath = movie["backdrop_path"] as! String
         let backdropUrl = URL(string: backdropBaseUrl + backdropPath)!
